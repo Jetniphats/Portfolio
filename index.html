@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jetniphat'sPortfolio</title>
+    <title>Jetniphat's Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,14 +121,14 @@
 </head>
 <body class="bg-gradient-to-br from-blue-50 via-white to-blue-100 min-h-screen text-gray-800">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-white bg-opacity-90 backdrop-blur-md z-50 px-6 py-4 shadow-sm">
+    <nav class="fixed top-0 w-full bg-white bg-opacity-90 backdrop-blur-md z-50 px-4 sm:px-6 py-3 sm:py-4 shadow-sm">
         <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Jetniphat's Portfolio</h1>
-            <div class="flex items-center space-x-6">
-                <a href="#about" class="hover:text-blue-600 transition-colors py-2">เกี่ยวกับ</a>
-                <a href="#projects" class="hover:text-blue-600 transition-colors py-2">ผลงาน</a>
-                <a href="#contact" class="hover:text-blue-600 transition-colors py-2">ติดต่อ</a>
-                <button id="adminBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">เจตต์นิภัทธ์ตัวจริงกดปุ่มนี้</button>
+            <h1 class="text-lg sm:text-xl md:text-2xl font-bold">Jetniphat's Portfolio</h1>
+            <div class="flex items-center space-x-3 sm:space-x-4 md:space-x-6">
+                <a href="#about" class="hover:text-blue-600 transition-colors py-2 text-sm sm:text-base">เกี่ยวกับ</a>
+                <a href="#projects" class="hover:text-blue-600 transition-colors py-2 text-sm sm:text-base">ผลงาน</a>
+                <a href="#contact" class="hover:text-blue-600 transition-colors py-2 text-sm sm:text-base">ติดต่อ</a>
+                <button id="adminBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg transition-colors text-sm sm:text-base">เจตต์นิภัทธ์ตัวจริงกดปุ่มนี้</button>
             </div>
         </div>
     </nav>
@@ -139,16 +139,19 @@
             <div class="w-32 h-32 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto mb-8 flex items-center justify-center text-4xl text-white">
                 👨‍💻
             </div>
-            <h2 id="heroName" class="text-5xl font-bold mb-4">สวัสดีผมคือ เจตต์นิภัทธ์ เบ็ญจมิตรกุล</h2>
-            <p id="heroDescription" class="text-xl text-gray-600 mb-8">นักเรียนในโครงการห้องเรียนพิเศษวิทยาศาสตร์ วิจัย และเทคโนโลยี</p>
+            <h2 id="heroName" class="text-5xl font-bold mb-4 min-h-[4rem]">
+                <span id="typewriterText"></span>
+                <span id="cursor" class="animate-pulse">|</span>
+            </h2>
+            <p id="heroDescription" class="text-xl text-gray-600 mb-8">สวัสดีทุกคน นี่เป็นเว็บไซต์ในการรวบรวมผลงาน ประกอบการเข้าศึกษาต่อในระดับอุดมศึกษาของเรานะ</p>
             <div class="flex justify-center space-x-4">
                 <a href="#projects" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block">ดูผลงาน</a>
-                <a href="#contact" class="border border-blue-400 hover:bg-blue-400 hover:text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block">ติดต่อฉัน</a>
+                <a href="#contact" class="border border-blue-400 hover:bg-blue-400 hover:text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block">Contact</a>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
+   <!-- About Section -->
     <section id="about" class="py-16 px-6 bg-blue-50 bg-opacity-50">
         <div class="max-w-6xl mx-auto">
             <h3 class="text-3xl font-bold text-center mb-12">เกี่ยวกับผม</h3>
@@ -160,7 +163,7 @@
                     </p>
                     <div class="flex flex-wrap gap-3">
                         <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm">พร้อมที่จะเรียนรู้และพัฒนาตนเองอยู้เสมอ</span>
-                        <span class="bg-blue-700 text-white px-4 py-2 rounded-full text-sm">ทักษะทางด้านภาษาคอมพิวเตอร์ หมายถึงความชอบและความถนัดเท่านั้น</span>
+                        <span class="bg-blue-700 text-white px-4 py-2 rounded-full text-sm">ทักษะทางด้านภาษาคอมพิวเตอร์ หมายถึงเป็นเพียงความชอบและความถนัดเท่านั้น</span>
                     </div>
                 </div>
                 <div class="bg-gradient-to-r from-blue-500 to-blue-700 p-8 rounded-2xl text-white">
@@ -192,7 +195,15 @@
                             <div class="bg-white bg-opacity-30 rounded-full h-2">
                                 <div class="bg-white rounded-full h-2 w-[65%]"></div>
                             </div>
-                        <div>
+                        
+                        <div class="flex justify-between mb-2">
+                                <span>Swift</span>
+                                <span>40%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-full h-2">
+                                <div class="bg-white rounded-full h-2 w-[40%]"></div>
+                            </div>
+                            <div>
                             <div class="flex justify-between mb-2">
                                 <span>UI/UX Design</span>
                                 <span>80%</span>
@@ -201,13 +212,6 @@
                                 <div class="bg-white rounded-full h-2 w-[80%]"></div>
                             </div>
                         </div>
-                        <div class="flex justify-between mb-2">
-                                <span>Swift</span>
-                                <span>40%</span>
-                            </div>
-                            <div class="bg-white bg-opacity-30 rounded-full h-2">
-                                <div class="bg-white rounded-full h-2 w-[40%]"></div>
-                            </div>
                     </div>
                 </div>
             </div>
@@ -217,16 +221,16 @@
     <!-- Projects Section -->
     <section id="projects" class="py-16 px-6">
         <div class="max-w-6xl mx-auto">
-            <h3 class="text-3xl font-bold text-center mb-12">ผลงานของผม</h3>
+            <h3 class="text-3xl font-bold text-center mb-12">ผลงานของฉัน</h3>
             
             <!-- Category Filter -->
-            <div class="flex justify-center mb-8">
-                <div class="bg-white bg-opacity-80 backdrop-blur-md rounded-2xl p-2 shadow-lg border border-blue-100 flex flex-wrap justify-center gap-2">
-                    <button id="filterAll" class="category-filter active px-4 py-2 rounded-xl font-semibold transition-all text-sm">ทั้งหมด</button>
-                    <button id="filterProject" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">โปรเจกต์</button>
-                    <button id="filterLearning" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">การศึกษาเรียนรู้ด้วยตนเอง</button>
-                    <button id="filterLeadership" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">ความเป็นผู้นำ</button>
-                    <button id="filterPresentation" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">ความกล้าแสดงออกและทักษะการนำเสนอ</button>
+            <div class="flex justify-center mb-8 px-4">
+                <div class="bg-white bg-opacity-80 backdrop-blur-md rounded-2xl p-2 shadow-lg border border-blue-100 flex flex-wrap justify-center gap-1 sm:gap-2 max-w-full">
+                    <button id="filterAll" class="category-filter active px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-xl font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">ทั้งหมด</button>
+                    <button id="filterProject" class="category-filter px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-xl font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">โปรเจกต์</button>
+                    <button id="filterLearning" class="category-filter px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-xl font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">การศึกษาเรียนรู้ด้วยตนเองและต่อเนื่อง</button>
+                    <button id="filterLeadership" class="category-filter px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-xl font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">ความเป็นผู้นำ</button>
+                    <button id="filterPresentation" class="category-filter px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-xl font-semibold transition-all text-xs sm:text-sm whitespace-nowrap">การนำเสนอและความกล้าแสดงออก</button>
                 </div>
             </div>
             
@@ -239,20 +243,20 @@
     <!-- Contact Section -->
     <section id="contact" class="py-16 px-6 bg-blue-50 bg-opacity-50">
         <div class="max-w-4xl mx-auto text-center">
-            <h3 class="text-3xl font-bold mb-8">ติดต่อฉัน</h3>
-            <p class="text-lg text-gray-600 mb-8">สนใจร่วมงานหรือมีโปรเจคที่น่าสนใจ? มาคุยกันได้เลย!</p>
-            <div class="flex justify-center space-x-8">
-                <a href="https://www.instagram.com/jx._niphxt/" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
-                    <span class="text-2xl">📷</span>
-                    <span>Instagram</span>
-                </a>
-                <a href="https://www.facebook.com/jetniphat.benchamitkun" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
-                    <span class="text-2xl">📘</span>
+            <h3 class="text-3xl font-bold mb-8">social media</h3>
+            <p class="text-lg text-gray-600 mb-8"></p>
+            <div class="flex justify-center space-x-6">
+                <a href="https://www.facebook.com/jetniphat.benchamitkun" target="_blank" rel="noopener noreferrer" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-3">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
                     <span>Facebook</span>
                 </a>
-                <a href="mailto:jetniphat@example.com" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
-                    <span class="text-2xl">📧</span>
-                    <span>Email</span>
+                <a href="https://www.instagram.com/jx._niphxt/" target="_blank" rel="noopener noreferrer" class="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-3">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    <span>Instagram</span>
                 </a>
             </div>
         </div>
@@ -292,13 +296,30 @@
             <div class="flex items-center space-x-3">
                 <div id="notificationIcon" class="text-2xl"></div>
                 <div>
-                    <div id="notificationTitle" class="font-semibold text-white text-sm"></div>
-                    <div id="notificationMessage" class="text-white text-opacity-90 text-xs"></div>
+                    <div id="notificationTitle" class="font-semibold text-gray-800 text-sm"></div>
+                    <div id="notificationMessage" class="text-gray-600 text-xs"></div>
                 </div>
-                <button id="closeNotification" class="text-white text-opacity-70 hover:text-opacity-100 ml-auto text-lg">&times;</button>
+                <button id="closeNotification" class="text-gray-500 hover:text-gray-700 ml-auto text-lg">&times;</button>
             </div>
         </div>
     </div>
+
+    <!-- Side Edit Panel -->
+    <div id="sideEditPanel" class="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-gray-800">แก้ไขผลงาน</h3>
+                <button id="closeSidePanel" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            
+            <div id="sideEditContent" class="space-y-4">
+                <!-- Edit form will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for side panel -->
+    <div id="sideEditOverlay" class="fixed inset-0 bg-black bg-opacity-30 z-40 hidden"></div>
 
     <!-- Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
@@ -332,9 +353,9 @@
                         <select id="editProjectCategory" class="w-full p-3 border rounded-lg">
                             <option value="">เลือกหมวดหมู่</option>
                             <option value="project">โปรเจกต์</option>
-                            <option value="learning">การศึกษาเรียนรู้ด้วยตนเองอย่างต่อเนื่อง</option>
+                            <option value="learning">การศึกษาเรียนรู้ด้วยตนเองและต่อเนื่อง</option>
                             <option value="leadership">ความเป็นผู้นำ</option>
-                            <option value="presentation">ความกล้าแสดงออกและทักษะการนำเสนอ</option>
+                            <option value="presentation">การนำเสนอและความกล้าแสดงออก</option>
                         </select>
                         <input type="number" id="editProjectOrder" placeholder="ลำดับความสำคัญ (1 = สำคัญที่สุด)" min="1" class="w-full p-3 border rounded-lg">
                         
@@ -369,9 +390,9 @@
                         <select id="projectCategory" class="w-full p-3 border rounded-lg">
                             <option value="">เลือกหมวดหมู่</option>
                             <option value="project">โปรเจกต์</option>
-                            <option value="learning">การศึกษาเรียนรู้ด้วยตนเองอย่างต่อเนื่อง</option>
+                            <option value="learning">การศึกษาเรียนรู้ด้วยตนเองและต่อเนื่อง</option>
                             <option value="leadership">ความเป็นผู้นำ</option>
-                            <option value="presentation">ความกล้าแสดงออกและทักษะการนำเสนอ</option>
+                            <option value="presentation">การนำเสนอและความกล้าแสดงออก</option>
                         </select>
                         <input type="number" id="projectOrder" placeholder="ลำดับความสำคัญ (1 = สำคัญที่สุด)" min="1" class="w-full p-3 border rounded-lg">
                         
@@ -682,23 +703,88 @@
             }
         }
 
-        // Edit Project Functions - Inline editing
+        // Side Panel Elements
+        const sideEditPanel = document.getElementById('sideEditPanel');
+        const sideEditOverlay = document.getElementById('sideEditOverlay');
+        const closeSidePanel = document.getElementById('closeSidePanel');
+        const sideEditContent = document.getElementById('sideEditContent');
+
+        // Edit Project Functions - Side panel editing
         function editProject(projectId) {
             const project = allProjects.find(p => p.id === projectId);
             if (!project) return;
 
-            // Find the project card
-            const projectCard = document.querySelector(`[data-project-id="${projectId}"]`).closest('.bg-white');
+            // Create side edit form
+            const editForm = createSideEditForm(project, projectId);
             
-            // Create inline edit form
-            const editForm = createInlineEditForm(project, projectId);
+            // Insert form into side panel
+            sideEditContent.innerHTML = editForm;
             
-            // Replace card content with edit form
-            projectCard.innerHTML = editForm;
-            projectCard.classList.add('border-2', 'border-yellow-400', 'bg-yellow-50');
+            // Show side panel
+            showSidePanel();
         }
 
-        // Create inline edit form
+        // Show side panel
+        function showSidePanel() {
+            sideEditOverlay.classList.remove('hidden');
+            sideEditPanel.classList.remove('translate-x-full');
+            document.body.style.paddingRight = '384px'; // 96 * 4 = 384px (w-96)
+            document.body.style.transition = 'padding-right 0.3s ease';
+        }
+
+        // Hide side panel
+        function hideSidePanel() {
+            sideEditOverlay.classList.add('hidden');
+            sideEditPanel.classList.add('translate-x-full');
+            document.body.style.paddingRight = '0';
+        }
+
+        // Close side panel events
+        closeSidePanel.addEventListener('click', hideSidePanel);
+        sideEditOverlay.addEventListener('click', hideSidePanel);
+
+        // Create side edit form
+        function createSideEditForm(project, projectId) {
+            return `
+                <div class="space-y-4">
+                    <input type="text" id="side-title-${projectId}" value="${project.title || ''}" placeholder="ชื่อโปรเจค" class="w-full p-3 border rounded-lg">
+                    
+                    <textarea id="side-description-${projectId}" placeholder="รายละเอียดโปรเจค" class="w-full p-3 border rounded-lg h-24">${project.description || ''}</textarea>
+                    
+                    <select id="side-category-${projectId}" class="w-full p-3 border rounded-lg">
+                        <option value="">เลือกหมวดหมู่</option>
+                        <option value="project" ${project.category === 'project' ? 'selected' : ''}>โปรเจกต์</option>
+                        <option value="learning" ${project.category === 'learning' ? 'selected' : ''}>การศึกษาเรียนรู้ด้วยตนเองและต่อเนื่อง</option>
+                        <option value="leadership" ${project.category === 'leadership' ? 'selected' : ''}>ความเป็นผู้นำ</option>
+                        <option value="presentation" ${project.category === 'presentation' ? 'selected' : ''}>การนำเสนอและความกล้าแสดงออก</option>
+                    </select>
+                    
+                    <input type="number" id="side-order-${projectId}" value="${project.order || ''}" placeholder="ลำดับความสำคัญ" min="1" class="w-full p-3 border rounded-lg">
+                    
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">รูปภาพ (สูงสุด 5 รูป)</label>
+                        <div class="text-xs text-gray-500 mb-2">
+                            💡 สำหรับ Google Drive: คลิกขวาที่ไฟล์ → Get link → ตั้งเป็น "Anyone with the link can view" → Copy link
+                        </div>
+                        ${Array.from({length: 5}, (_, i) => `
+                            <input type="url" id="side-image${i+1}-${projectId}" value="${project[`image${i+1}`] || ''}" placeholder="URL รูปภาพที่ ${i+1}" class="w-full p-2 border rounded text-sm">
+                        `).join('')}
+                    </div>
+                    
+                    <input type="url" id="side-link-${projectId}" value="${project.link || ''}" placeholder="ลิงก์โปรเจค" class="w-full p-3 border rounded-lg">
+                    
+                    <input type="url" id="side-facebook-${projectId}" value="${project.facebookPost || ''}" placeholder="ลิงก์โพสต์ Facebook" class="w-full p-3 border rounded-lg">
+                    
+                    <div class="flex flex-col space-y-2 pt-4">
+                        <button onclick="saveSideEdit('${projectId}')" class="bg-blue-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">บันทึกการแก้ไข</button>
+                        <button onclick="deleteSideProject('${projectId}')" class="bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 transition-colors font-semibold">ลบผลงาน</button>
+                        <button onclick="hideSidePanel()" class="bg-gray-500 text-white px-4 py-3 rounded-lg hover:bg-gray-600 transition-colors font-semibold">ยกเลิก</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Create inline edit form (legacy - keep for compatibility)
         function createInlineEditForm(project, projectId) {
             return `
                 <div class="p-4">
@@ -715,9 +801,9 @@
                         <select id="inline-category-${projectId}" class="w-full p-2 border rounded text-sm">
                             <option value="">เลือกหมวดหมู่</option>
                             <option value="project" ${project.category === 'project' ? 'selected' : ''}>โปรเจกต์</option>
-                            <option value="learning" ${project.category === 'learning' ? 'selected' : ''}>การศึกษาเรียนรู้ด้วยตนเอง</option>
+                            <option value="learning" ${project.category === 'learning' ? 'selected' : ''}>การศึกษาเรียนรู้ด้วยตนเองและต่อเนื่อง</option>
                             <option value="leadership" ${project.category === 'leadership' ? 'selected' : ''}>ความเป็นผู้นำ</option>
-                            <option value="presentation" ${project.category === 'presentation' ? 'selected' : ''}>ความกล้าแสดงออกและทักษะการนำเสนอ</option>
+                            <option value="presentation" ${project.category === 'presentation' ? 'selected' : ''}>การนำเสนอและความกล้าแสดงออก</option>
                         </select>
                         
                         <input type="number" id="inline-order-${projectId}" value="${project.order || ''}" placeholder="ลำดับความสำคัญ" min="1" class="w-full p-2 border rounded text-sm">
@@ -743,7 +829,105 @@
             `;
         }
 
-        // Inline edit functions
+        // Side panel edit functions
+        async function saveSideEdit(projectId) {
+            const title = document.getElementById(`side-title-${projectId}`).value.trim();
+            const description = document.getElementById(`side-description-${projectId}`).value.trim();
+            const category = document.getElementById(`side-category-${projectId}`).value;
+            const order = parseInt(document.getElementById(`side-order-${projectId}`).value) || 999;
+            const link = document.getElementById(`side-link-${projectId}`).value.trim();
+            const facebookPost = document.getElementById(`side-facebook-${projectId}`).value.trim();
+
+            // Collect images
+            const images = {};
+            for (let i = 1; i <= 5; i++) {
+                const imageUrl = document.getElementById(`side-image${i}-${projectId}`).value.trim();
+                images[`image${i}`] = imageUrl || '';
+            }
+
+            if (!title || !description || !category) {
+                showNotification('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อ รายละเอียด และเลือกหมวดหมู่โปรเจค', 'error');
+                return;
+            }
+
+            // Show loading state
+            const saveButton = document.querySelector(`button[onclick="saveSideEdit('${projectId}')"]`);
+            const originalText = saveButton.textContent;
+            saveButton.textContent = 'กำลังบันทึก...';
+            saveButton.disabled = true;
+
+            try {
+                // Update project in Firestore
+                const projectData = {
+                    title: title,
+                    description: description,
+                    category: category,
+                    order: order,
+                    link: link || '',
+                    facebookPost: facebookPost || '',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    ...images
+                };
+
+                await db.collection('projects').doc(projectId).update(projectData);
+
+                // Update local data
+                const projectIndex = allProjects.findIndex(p => p.id === projectId);
+                if (projectIndex !== -1) {
+                    allProjects[projectIndex] = { ...allProjects[projectIndex], ...projectData };
+                }
+
+                // Re-display projects with updated data
+                displayProjects(allProjects);
+                
+                // Hide side panel
+                hideSidePanel();
+                
+                showNotification('บันทึกสำเร็จ!', 'ข้อมูลผลงานได้รับการอัปเดตแล้ว', 'success');
+            } catch (error) {
+                console.error('Error updating project: ', error);
+                showNotification('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: ' + error.message, 'error');
+                
+                // Reset button state on error
+                saveButton.textContent = originalText;
+                saveButton.disabled = false;
+            }
+        }
+
+        async function deleteSideProject(projectId) {
+            const confirmDelete = confirm('คุณแน่ใจหรือไม่ที่จะลบผลงานนี้? การกระทำนี้ไม่สามารถย้อนกลับได้');
+            if (!confirmDelete) return;
+
+            // Show loading state
+            const deleteButton = document.querySelector(`button[onclick="deleteSideProject('${projectId}')"]`);
+            const originalText = deleteButton.textContent;
+            deleteButton.textContent = 'กำลังลบ...';
+            deleteButton.disabled = true;
+
+            try {
+                await db.collection('projects').doc(projectId).delete();
+
+                // Remove from local data
+                allProjects = allProjects.filter(p => p.id !== projectId);
+
+                // Re-display projects
+                displayProjects(allProjects);
+                
+                // Hide side panel
+                hideSidePanel();
+                
+                showNotification('ลบผลงานสำเร็จ!', 'ผลงานได้ถูกลบออกจากระบบแล้ว', 'success');
+            } catch (error) {
+                console.error('Error deleting project: ', error);
+                showNotification('เกิดข้อผิดพลาด', 'ไม่สามารถลบผลงานได้: ' + error.message, 'error');
+                
+                // Reset button state on error
+                deleteButton.textContent = originalText;
+                deleteButton.disabled = false;
+            }
+        }
+
+        // Inline edit functions (legacy)
         function cancelInlineEdit(projectId) {
             // Reload projects to restore original card
             displayProjects(allProjects);
@@ -1025,20 +1209,7 @@
             }
         });
 
-        // Load Profile Data
-        async function loadProfileData() {
-            try {
-                const doc = await db.collection('profile').doc('main').get();
-                if (doc.exists) {
-                    const data = doc.data();
-                    document.getElementById('heroName').textContent = data.name || 'สวัสดี ฉันคือ เจตต์นิภัทธ์ เบ็ญจมิตรกุล';
-                    document.getElementById('heroDescription').textContent = data.title || 'นักเรียนในโครงการห้องเรียนพิเศษวิทยาศาสตร์ วิจัย และเทคโนโลยี';
-                    document.getElementById('aboutText').textContent = data.about || 'สวัสดีครับ ผมชื่อ นายเจตต์นิภัทธ์ เบ็ญจมิตรกุล เป็นนักเรียนในโครงการห้องเรียนพิเศษวิทยาศาสตร์ วิจัย และเทคโนโลยี ผมมีความสนใจในด้านเทคโนโลยี การเขียนโปรแกรม และการพัฒนาโปรเจกต์ต่างๆ ที่สร้างสรรค์และมีประโยชน์';
-                }
-            } catch (error) {
-                console.error('Error loading profile:', error);
-            }
-        }
+        // Profile data is now static - no database loading needed
 
         // Global projects array
         let allProjects = [];
@@ -1213,17 +1384,30 @@
                     <div class="aspect-[4/3] bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg mb-4 flex items-center justify-center text-4xl text-white">
                         ${displayImage ? `<img src="${displayImage}" alt="${project.title}" class="w-full h-full object-cover rounded-lg" data-original-url="${project.image1 || ''}" onerror="handleImageError(this, this.dataset.originalUrl)">` : '🖼️'}
                     </div>
-                    ${isAdminLoggedIn ? `<button class="edit-project-btn absolute top-2 right-2 bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full text-sm transition-colors" data-project-id="${id}" onclick="event.stopPropagation(); editProject('${id}')">✏️</button>` : ''}
+                    ${isAdminLoggedIn ? `<button class="edit-project-btn absolute top-2 right-2 bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full text-sm transition-colors z-10" data-project-id="${id}">✏️</button>` : ''}
                 </div>
                 <h4 class="text-xl font-bold mb-2 text-gray-800">${project.title}</h4>
                 <p class="text-gray-600 mb-4 line-clamp-3">${project.description}</p>
                 <div class="text-blue-600 font-semibold text-sm">คลิกเพื่อดูรายละเอียด →</div>
             `;
             
-            // Add click event to show modal
-            card.addEventListener('click', () => {
+            // Add click event to show modal (but not if clicking edit button)
+            card.addEventListener('click', (e) => {
+                // Don't open modal if clicking on edit button
+                if (e.target.closest('.edit-project-btn')) {
+                    return;
+                }
                 showProjectDetail(project);
             });
+            
+            // Add edit button event listener
+            const editBtn = card.querySelector('.edit-project-btn');
+            if (editBtn) {
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    editProject(id);
+                });
+            }
             
             return card;
         }
@@ -1281,10 +1465,42 @@
             document.getElementById(activeId).classList.add('active');
         }
 
+        // Typewriter Effect
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    // Hide cursor after typing is complete
+                    setTimeout(() => {
+                        document.getElementById('cursor').style.opacity = '0';
+                    }, 1000);
+                }
+            }
+            
+            type();
+        }
+
+        // Initialize typewriter effect
+        function initTypewriter() {
+            const typewriterElement = document.getElementById('typewriterText');
+            const fullText = 'นายเจตต์นิภัทธ์ เบ็ญจมิตรกุล';
+            
+            // Start typing after a short delay
+            setTimeout(() => {
+                typeWriter(typewriterElement, fullText, 80);
+            }, 500);
+        }
+
         // Initialize
         checkSessionValidity(); // Check session on page load
-        loadProfileData();
         loadProjects();
+        initTypewriter();
 
         // Auth State Observer
         auth.onAuthStateChanged(user => {
@@ -1295,5 +1511,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'988f0ae6810eee29',t:'MTc1OTUyMTgwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'988fb3c1112dee29',t:'MTc1OTUyODcxOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
