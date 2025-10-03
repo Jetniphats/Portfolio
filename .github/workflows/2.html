@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jetniphat'sPortfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Anuphan', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .admin-panel {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+        .category-filter {
+            color: #6b7280;
+        }
+        .category-filter:hover {
+            color: #2563eb;
+            background: rgba(37, 99, 235, 0.1);
+        }
+        .category-filter.active {
+            background: #2563eb;
+            color: white;
+        }
+        .thumbnail {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+        }
+        .thumbnail.active {
+            border: 3px solid #2563eb;
+        }
+        .modal-backdrop {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-backdrop.show {
+            opacity: 1;
+        }
+        .modal-content {
+            transform: scale(0.7) translateY(-50px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-content.show {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+        .image-fade {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .thumbnail-hover {
+            transition: all 0.2s ease;
+        }
+        .thumbnail-hover:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .project-card {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-card.fade-out {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .project-card.fade-in {
+            animation: projectFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes projectFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .notification-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .notification-popup.show {
+            transform: translateX(0);
+        }
+        .notification-popup.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+        .notification-popup.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+        .notification-popup.info {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-white to-blue-100 min-h-screen text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white bg-opacity-90 backdrop-blur-md z-50 px-6 py-4 shadow-sm">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Jetniphat's Portfolio</h1>
+            <div class="flex items-center space-x-6">
+                <a href="#about" class="hover:text-blue-600 transition-colors py-2">เกี่ยวกับ</a>
+                <a href="#projects" class="hover:text-blue-600 transition-colors py-2">ผลงาน</a>
+                <a href="#contact" class="hover:text-blue-600 transition-colors py-2">ติดต่อ</a>
+                <button id="adminBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">เจตต์นิภัทธ์ตัวจริงกดปุ่มนี้</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-16 px-6">
+        <div class="max-w-6xl mx-auto text-center fade-in">
+            <div class="w-32 h-32 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full mx-auto mb-8 flex items-center justify-center text-4xl text-white">
+                👨‍💻
+            </div>
+            <h2 id="heroName" class="text-5xl font-bold mb-4">สวัสดีผมคือ เจตต์นิภัทธ์ เบ็ญจมิตรกุล</h2>
+            <p id="heroDescription" class="text-xl text-gray-600 mb-8">นักเรียนในโครงการห้องเรียนพิเศษวิทยาศาสตร์ วิจัย และเทคโนโลยี</p>
+            <div class="flex justify-center space-x-4">
+                <a href="#projects" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block">ดูผลงาน</a>
+                <a href="#contact" class="border border-blue-400 hover:bg-blue-400 hover:text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block">ติดต่อฉัน</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 px-6 bg-blue-50 bg-opacity-50">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="text-3xl font-bold text-center mb-12">เกี่ยวกับผม</h3>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p id="aboutText" class="text-lg text-gray-600 leading-relaxed mb-6">
+                        สวัสดีครับ ผมชื่อ นายเจตต์นิภัทธ์ เบ็ญจมิตรกุล เป็นนักเรียนในโครงการห้องเรียนพิเศษวิทยาศาสตร์ วิจัย และเทคโนโลยี 
+                        ผมมีความสนใจในด้านเทคโนโลยี การเขียนโปรแกรม และการพัฒนาโปรเจกต์ต่างๆ ที่สร้างสรรค์และมีประโยชน์
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <span class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm">พร้อมที่จะเรียนรู้และพัฒนาตนเองอยู้เสมอ</span>
+                        <span class="bg-blue-700 text-white px-4 py-2 rounded-full text-sm">ทักษะทางด้านภาษาคอมพิวเตอร์ หมายถึงความชอบและความถนัดเท่านั้น</span>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-blue-500 to-blue-700 p-8 rounded-2xl text-white">
+                    <h4 class="text-xl font-bold mb-4">ทักษะทางด้านภาษาคอมพิวเตอร์</h4>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>HTML</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-full h-2">
+                                <div class="bg-white rounded-full h-2 w-[80%]"></div>
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>JavaScript</span>
+                                <span>60%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-full h-2">
+                                <div class="bg-white rounded-full h-2 w-[60%]"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                                <span>Python</span>
+                                <span>65%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-full h-2">
+                                <div class="bg-white rounded-full h-2 w-[65%]"></div>
+                            </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span>UI/UX Design</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-full h-2">
+                                <div class="bg-white rounded-full h-2 w-[80%]"></div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                                <span>Swift</span>
+                                <span>40%</span>
+                            </div>
+                            <div class="bg-white bg-opacity-30 rounded-full h-2">
+                                <div class="bg-white rounded-full h-2 w-[40%]"></div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h3 class="text-3xl font-bold text-center mb-12">ผลงานของผม</h3>
+            
+            <!-- Category Filter -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-white bg-opacity-80 backdrop-blur-md rounded-2xl p-2 shadow-lg border border-blue-100 flex flex-wrap justify-center gap-2">
+                    <button id="filterAll" class="category-filter active px-4 py-2 rounded-xl font-semibold transition-all text-sm">ทั้งหมด</button>
+                    <button id="filterProject" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">โปรเจกต์</button>
+                    <button id="filterLearning" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">การศึกษาเรียนรู้ด้วยตนเอง</button>
+                    <button id="filterLeadership" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">ความเป็นผู้นำ</button>
+                    <button id="filterPresentation" class="category-filter px-4 py-2 rounded-xl font-semibold transition-all text-sm">ความกล้าแสดงออกและทักษะการนำเสนอ</button>
+                </div>
+            </div>
+            
+            <div id="projectsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projects will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-6 bg-blue-50 bg-opacity-50">
+        <div class="max-w-4xl mx-auto text-center">
+            <h3 class="text-3xl font-bold mb-8">ติดต่อฉัน</h3>
+            <p class="text-lg text-gray-600 mb-8">สนใจร่วมงานหรือมีโปรเจคที่น่าสนใจ? มาคุยกันได้เลย!</p>
+            <div class="flex justify-center space-x-8">
+                <a href="https://www.instagram.com/jx._niphxt/" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
+                    <span class="text-2xl">📷</span>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.facebook.com/jetniphat.benchamitkun" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
+                    <span class="text-2xl">📘</span>
+                    <span>Facebook</span>
+                </a>
+                <a href="mailto:jetniphat@example.com" class="flex items-center space-x-2 hover:text-blue-600 transition-colors">
+                    <span class="text-2xl">📧</span>
+                    <span>Email</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Detail Modal -->
+    <div id="projectModal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div id="modalContent" class="modal-content bg-white rounded-2xl p-8 max-w-6xl w-full max-h-[95vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalTitle" class="text-2xl font-bold text-gray-800"></h3>
+                <button id="closeProjectModal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            
+            <!-- Image Gallery -->
+            <div id="imageGallery" class="mb-6">
+                <div id="mainImage" class="mb-4">
+                    <img id="currentImage" src="" alt="" class="image-fade w-full max-h-[60vh] object-contain rounded-lg bg-gray-100">
+                </div>
+                <div id="thumbnails" class="flex space-x-2 overflow-x-auto pb-2">
+                    <!-- Thumbnails will be inserted here -->
+                </div>
+            </div>
+            
+            <!-- Project Details -->
+            <div class="space-y-4">
+                <p id="modalDescription" class="text-gray-600 text-lg leading-relaxed"></p>
+                <div id="modalLinks" class="flex space-x-4">
+                    <!-- Links will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Popup -->
+    <div id="notificationPopup" class="notification-popup">
+        <div class="bg-white bg-opacity-95 backdrop-blur-md rounded-xl p-4 shadow-xl border border-white border-opacity-20 min-w-[300px]">
+            <div class="flex items-center space-x-3">
+                <div id="notificationIcon" class="text-2xl"></div>
+                <div>
+                    <div id="notificationTitle" class="font-semibold text-white text-sm"></div>
+                    <div id="notificationMessage" class="text-white text-opacity-90 text-xs"></div>
+                </div>
+                <button id="closeNotification" class="text-white text-opacity-70 hover:text-opacity-100 ml-auto text-lg">&times;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="admin-panel rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto text-gray-800">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold">Admin Panel</h3>
+                <button id="closeAdmin" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="mb-6">
+                <h4 class="text-lg font-semibold mb-4">เข้าสู่ระบบ Admin</h4>
+                <div class="space-y-4">
+                    <input type="text" id="adminEmail" placeholder="Username" class="w-full p-3 border rounded-lg">
+                    <input type="password" id="adminPassword" placeholder="Password" class="w-full p-3 border rounded-lg">
+                    <button id="loginBtn" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">เข้าสู่ระบบ</button>
+                </div>
+            </div>
+
+            <!-- Admin Controls -->
+            <div id="adminControls" class="hidden space-y-6">
+                <!-- Edit Project Form -->
+                <div id="editProjectForm" class="bg-yellow-50 p-6 rounded-lg hidden mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-semibold">แก้ไขผลงาน</h4>
+                        <button id="cancelEdit" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                    </div>
+                    <div class="space-y-4">
+                        <input type="text" id="editProjectTitle" placeholder="ชื่อโปรเจค" class="w-full p-3 border rounded-lg">
+                        <textarea id="editProjectDescription" placeholder="รายละเอียดโปรเจค" class="w-full p-3 border rounded-lg h-24"></textarea>
+                        <select id="editProjectCategory" class="w-full p-3 border rounded-lg">
+                            <option value="">เลือกหมวดหมู่</option>
+                            <option value="project">โปรเจกต์</option>
+                            <option value="learning">การศึกษาเรียนรู้ด้วยตนเองอย่างต่อเนื่อง</option>
+                            <option value="leadership">ความเป็นผู้นำ</option>
+                            <option value="presentation">ความกล้าแสดงออกและทักษะการนำเสนอ</option>
+                        </select>
+                        <input type="number" id="editProjectOrder" placeholder="ลำดับความสำคัญ (1 = สำคัญที่สุด)" min="1" class="w-full p-3 border rounded-lg">
+                        
+                        <!-- Multiple Image Inputs for Edit -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">รูปภาพ (สูงสุด 5 รูป)</label>
+                            <div class="text-xs text-gray-500 mb-2">
+                                💡 สำหรับ Google Drive: คลิกขวาที่ไฟล์ → Get link → ตั้งเป็น "Anyone with the link can view" → Copy link
+                            </div>
+                            <input type="url" id="editProjectImage1" placeholder="URL รูปภาพที่ 1 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="editProjectImage2" placeholder="URL รูปภาพที่ 2 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="editProjectImage3" placeholder="URL รูปภาพที่ 3 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="editProjectImage4" placeholder="URL รูปภาพที่ 4 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="editProjectImage5" placeholder="URL รูปภาพที่ 5 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                        </div>
+                        
+                        <input type="url" id="editProjectLink" placeholder="ลิงก์โปรเจค" class="w-full p-3 border rounded-lg">
+                        <input type="url" id="editFacebookPost" placeholder="ลิงก์โพสต์ Facebook (ถ้ามี)" class="w-full p-3 border rounded-lg">
+                        
+                        <div class="flex space-x-4">
+                            <button id="updateProject" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">อัปเดตผลงาน</button>
+                            <button id="deleteProject" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">ลบผลงาน</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 p-6 rounded-lg">
+                    <h4 class="text-lg font-semibold mb-4">เพิ่มผลงานใหม่</h4>
+                    <div class="space-y-4">
+                        <input type="text" id="projectTitle" placeholder="ชื่อโปรเจค" class="w-full p-3 border rounded-lg">
+                        <textarea id="projectDescription" placeholder="รายละเอียดโปรเจค" class="w-full p-3 border rounded-lg h-24"></textarea>
+                        <select id="projectCategory" class="w-full p-3 border rounded-lg">
+                            <option value="">เลือกหมวดหมู่</option>
+                            <option value="project">โปรเจกต์</option>
+                            <option value="learning">การศึกษาเรียนรู้ด้วยตนเองอย่างต่อเนื่อง</option>
+                            <option value="leadership">ความเป็นผู้นำ</option>
+                            <option value="presentation">ความกล้าแสดงออกและทักษะการนำเสนอ</option>
+                        </select>
+                        <input type="number" id="projectOrder" placeholder="ลำดับความสำคัญ (1 = สำคัญที่สุด)" min="1" class="w-full p-3 border rounded-lg">
+                        
+                        <!-- Multiple Image Inputs -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-medium text-gray-700">รูปภาพ (สูงสุด 5 รูป)</label>
+                            <div class="text-xs text-gray-500 mb-2">
+                                💡 สำหรับ Google Drive: คลิกขวาที่ไฟล์ → Get link → ตั้งเป็น "Anyone with the link can view" → Copy link
+                            </div>
+                            <input type="url" id="projectImage1" placeholder="URL รูปภาพที่ 1 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="projectImage2" placeholder="URL รูปภาพที่ 2 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="projectImage3" placeholder="URL รูปภาพที่ 3 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="projectImage4" placeholder="URL รูปภาพที่ 4 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                            <input type="url" id="projectImage5" placeholder="URL รูปภาพที่ 5 (รองรับ Google Drive)" class="w-full p-3 border rounded-lg">
+                        </div>
+                        
+                        <input type="url" id="projectLink" placeholder="ลิงก์โปรเจค" class="w-full p-3 border rounded-lg">
+                        <input type="url" id="facebookPost" placeholder="ลิงก์โพสต์ Facebook (ถ้ามี)" class="w-full p-3 border rounded-lg">
+                        <button id="addProject" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">เพิ่มผลงาน</button>
+                    </div>
+                </div>
+
+                <button id="logoutBtn" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">ออกจากระบบ</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2kq4e2Wkg1S5Y9PmBeR_AdJS1IcFVEuM",
+            authDomain: "my-portfolio-3793d.firebaseapp.com",
+            projectId: "my-portfolio-3793d",
+            storageBucket: "my-portfolio-3793d.firebasestorage.app",
+            messagingSenderId: ". ",
+            appId: "1:. :web:f24789a694cac8146b8ce2",
+            measurementId: "G-TSNH7SPLKL"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        const storage = firebase.storage();
+
+        // DOM Elements
+        const adminBtn = document.getElementById('adminBtn');
+        const adminModal = document.getElementById('adminModal');
+        const closeAdmin = document.getElementById('closeAdmin');
+        const loginForm = document.getElementById('loginForm');
+        const adminControls = document.getElementById('adminControls');
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Notification Elements
+        const notificationPopup = document.getElementById('notificationPopup');
+        const notificationIcon = document.getElementById('notificationIcon');
+        const notificationTitle = document.getElementById('notificationTitle');
+        const notificationMessage = document.getElementById('notificationMessage');
+        const closeNotification = document.getElementById('closeNotification');
+
+        // Project Modal Elements
+        const projectModal = document.getElementById('projectModal');
+        const closeProjectModal = document.getElementById('closeProjectModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalLinks = document.getElementById('modalLinks');
+        const currentImage = document.getElementById('currentImage');
+        const thumbnails = document.getElementById('thumbnails');
+
+        // Admin session management
+        let isAdminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+        let currentEditingProjectId = null;
+
+        // Notification System
+        function showNotification(title, message, type = 'info', duration = 4000) {
+            // Set content
+            notificationTitle.textContent = title;
+            notificationMessage.textContent = message;
+            
+            // Set icon and style based on type
+            notificationPopup.className = 'notification-popup';
+            switch(type) {
+                case 'success':
+                    notificationIcon.textContent = '✅';
+                    notificationPopup.classList.add('success');
+                    break;
+                case 'error':
+                    notificationIcon.textContent = '❌';
+                    notificationPopup.classList.add('error');
+                    break;
+                case 'info':
+                default:
+                    notificationIcon.textContent = 'ℹ️';
+                    notificationPopup.classList.add('info');
+                    break;
+            }
+            
+            // Show notification
+            notificationPopup.classList.add('show');
+            
+            // Auto hide after duration
+            setTimeout(() => {
+                hideNotification();
+            }, duration);
+        }
+
+        function hideNotification() {
+            notificationPopup.classList.remove('show');
+        }
+
+        // Close notification manually
+        closeNotification.addEventListener('click', hideNotification);
+
+        // Show/Hide Admin Modal
+        adminBtn.addEventListener('click', () => {
+            adminModal.classList.remove('hidden');
+            checkAdminSession();
+        });
+
+        closeAdmin.addEventListener('click', () => {
+            adminModal.classList.add('hidden');
+        });
+
+        // Project Modal Controls
+        closeProjectModal.addEventListener('click', () => {
+            closeProjectModalWithAnimation();
+        });
+
+        // Close modals when clicking outside
+        projectModal.addEventListener('click', (e) => {
+            if (e.target === projectModal) {
+                closeProjectModalWithAnimation();
+            }
+        });
+
+        // Function to close modal with animation
+        function closeProjectModalWithAnimation() {
+            const modalContent = document.getElementById('modalContent');
+            
+            // Remove show classes for animation
+            projectModal.classList.remove('show');
+            modalContent.classList.remove('show');
+            
+            // Hide modal after animation completes
+            setTimeout(() => {
+                projectModal.classList.add('hidden');
+            }, 400);
+        }
+
+        adminModal.addEventListener('click', (e) => {
+            if (e.target === adminModal) {
+                adminModal.classList.add('hidden');
+            }
+        });
+
+        // Show Project Detail Modal
+        function showProjectDetail(project) {
+            modalTitle.textContent = project.title;
+            modalDescription.textContent = project.description;
+            
+            // Handle images
+            const images = [];
+            for (let i = 1; i <= 5; i++) {
+                if (project[`image${i}`] && project[`image${i}`].trim()) {
+                    images.push(project[`image${i}`]);
+                }
+            }
+            
+            if (images.length > 0) {
+                // Convert Google Drive URLs and show first image as main
+                const convertedImages = images.map(img => convertGoogleDriveUrl(img));
+                currentImage.src = convertedImages[0];
+                currentImage.alt = project.title;
+                currentImage.dataset.originalUrl = images[0];
+                currentImage.onerror = function() { handleImageError(this, this.dataset.originalUrl); };
+                
+                // Create thumbnails
+                thumbnails.innerHTML = '';
+                convertedImages.forEach((img, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = img;
+                    thumb.alt = `${project.title} - รูปที่ ${index + 1}`;
+                    thumb.className = `thumbnail thumbnail-hover w-16 h-16 object-cover rounded-lg ${index === 0 ? 'active' : ''}`;
+                    thumb.dataset.originalUrl = images[index];
+                    thumb.onerror = function() { handleImageError(this, this.dataset.originalUrl); };
+                    thumb.addEventListener('click', () => {
+                        // Fade out current image
+                        currentImage.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            currentImage.src = img;
+                            currentImage.dataset.originalUrl = images[index];
+                            currentImage.onerror = function() { handleImageError(this, this.dataset.originalUrl); };
+                            currentImage.style.opacity = '1';
+                            
+                            // Update active thumbnail
+                            thumbnails.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                            thumb.classList.add('active');
+                        }, 150);
+                    });
+                    thumbnails.appendChild(thumb);
+                });
+            } else {
+                // No images, show placeholder
+                currentImage.src = '';
+                currentImage.alt = 'ไม่มีรูปภาพ';
+                thumbnails.innerHTML = '<div class="w-full text-center text-gray-500 py-4">ไม่มีรูปภาพ</div>';
+            }
+            
+            // Handle links
+            modalLinks.innerHTML = '';
+            if (project.link) {
+                const projectLink = document.createElement('a');
+                projectLink.href = project.link;
+                projectLink.target = '_blank';
+                projectLink.rel = 'noopener noreferrer';
+                projectLink.className = 'bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition-colors transform hover:scale-105';
+                projectLink.textContent = 'ดูโปรเจค';
+                modalLinks.appendChild(projectLink);
+            }
+            
+            if (project.facebookPost) {
+                const fbLink = document.createElement('a');
+                fbLink.href = project.facebookPost;
+                fbLink.target = '_blank';
+                fbLink.rel = 'noopener noreferrer';
+                fbLink.className = 'bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors transform hover:scale-105';
+                fbLink.textContent = 'Facebook';
+                modalLinks.appendChild(fbLink);
+            }
+            
+            // Show modal with animation
+            projectModal.classList.remove('hidden');
+            const modalContent = document.getElementById('modalContent');
+            
+            // Force reflow
+            projectModal.offsetHeight;
+            
+            // Add show classes for animation
+            setTimeout(() => {
+                projectModal.classList.add('show');
+                modalContent.classList.add('show');
+            }, 10);
+        }
+
+        // Check admin session on modal open
+        function checkAdminSession() {
+            if (isAdminLoggedIn) {
+                loginForm.classList.add('hidden');
+                adminControls.classList.remove('hidden');
+            } else {
+                loginForm.classList.remove('hidden');
+                adminControls.classList.add('hidden');
+            }
+        }
+
+        // Admin Login
+        loginBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+
+            // Hardcoded admin credentials
+            const adminUsername = 'jetniphat';
+            const adminPassword = '.';
+
+            if (username === adminUsername && password === adminPassword) {
+                isAdminLoggedIn = true;
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminLoginTime', Date.now().toString());
+                
+                loginForm.classList.add('hidden');
+                adminControls.classList.remove('hidden');
+                loadAdminData();
+                showNotification('เข้าสู่ระบบสำเร็จ!', 'ยินดีต้อนรับเข้าสู่ระบบ Admin', 'success');
+                
+                // Clear login form
+                document.getElementById('adminEmail').value = '';
+                document.getElementById('adminPassword').value = '';
+            } else {
+                showNotification('เข้าสู่ระบบไม่สำเร็จ', 'Username หรือ Password ไม่ถูกต้อง', 'error');
+            }
+        });
+
+        // Admin Logout
+        logoutBtn.addEventListener('click', () => {
+            isAdminLoggedIn = false;
+            localStorage.removeItem('adminLoggedIn');
+            localStorage.removeItem('adminLoginTime');
+            
+            loginForm.classList.remove('hidden');
+            adminControls.classList.add('hidden');
+            showNotification('ออกจากระบบแล้ว', 'ขอบคุณที่ใช้งาน Admin Panel', 'info');
+        });
+
+        // Check session validity (optional: auto-logout after 7 days)
+        function checkSessionValidity() {
+            const loginTime = localStorage.getItem('adminLoginTime');
+            if (loginTime) {
+                const daysSinceLogin = (Date.now() - parseInt(loginTime)) / (1000 * 60 * 60 * 24);
+                if (daysSinceLogin > 7) {
+                    // Auto logout after 7 days
+                    isAdminLoggedIn = false;
+                    localStorage.removeItem('adminLoggedIn');
+                    localStorage.removeItem('adminLoginTime');
+                }
+            }
+        }
+
+        // Edit Project Functions - Inline editing
+        function editProject(projectId) {
+            const project = allProjects.find(p => p.id === projectId);
+            if (!project) return;
+
+            // Find the project card
+            const projectCard = document.querySelector(`[data-project-id="${projectId}"]`).closest('.bg-white');
+            
+            // Create inline edit form
+            const editForm = createInlineEditForm(project, projectId);
+            
+            // Replace card content with edit form
+            projectCard.innerHTML = editForm;
+            projectCard.classList.add('border-2', 'border-yellow-400', 'bg-yellow-50');
+        }
+
+        // Create inline edit form
+        function createInlineEditForm(project, projectId) {
+            return `
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="text-lg font-bold text-gray-800">แก้ไขผลงาน</h4>
+                        <button onclick="cancelInlineEdit('${projectId}')" class="text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <input type="text" id="inline-title-${projectId}" value="${project.title || ''}" placeholder="ชื่อโปรเจค" class="w-full p-2 border rounded text-sm">
+                        
+                        <textarea id="inline-description-${projectId}" placeholder="รายละเอียดโปรเจค" class="w-full p-2 border rounded text-sm h-20">${project.description || ''}</textarea>
+                        
+                        <select id="inline-category-${projectId}" class="w-full p-2 border rounded text-sm">
+                            <option value="">เลือกหมวดหมู่</option>
+                            <option value="project" ${project.category === 'project' ? 'selected' : ''}>โปรเจกต์</option>
+                            <option value="learning" ${project.category === 'learning' ? 'selected' : ''}>การศึกษาเรียนรู้ด้วยตนเอง</option>
+                            <option value="leadership" ${project.category === 'leadership' ? 'selected' : ''}>ความเป็นผู้นำ</option>
+                            <option value="presentation" ${project.category === 'presentation' ? 'selected' : ''}>ความกล้าแสดงออกและทักษะการนำเสนอ</option>
+                        </select>
+                        
+                        <input type="number" id="inline-order-${projectId}" value="${project.order || ''}" placeholder="ลำดับความสำคัญ" min="1" class="w-full p-2 border rounded text-sm">
+                        
+                        <div class="space-y-2">
+                            <label class="block text-xs font-medium text-gray-700">รูปภาพ (สูงสุด 5 รูป)</label>
+                            ${Array.from({length: 5}, (_, i) => `
+                                <input type="url" id="inline-image${i+1}-${projectId}" value="${project[`image${i+1}`] || ''}" placeholder="URL รูปภาพที่ ${i+1}" class="w-full p-2 border rounded text-xs">
+                            `).join('')}
+                        </div>
+                        
+                        <input type="url" id="inline-link-${projectId}" value="${project.link || ''}" placeholder="ลิงก์โปรเจค" class="w-full p-2 border rounded text-sm">
+                        
+                        <input type="url" id="inline-facebook-${projectId}" value="${project.facebookPost || ''}" placeholder="ลิงก์โพสต์ Facebook" class="w-full p-2 border rounded text-sm">
+                        
+                        <div class="flex space-x-2 pt-2">
+                            <button onclick="saveInlineEdit('${projectId}')" class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition-colors flex-1">บันทึก</button>
+                            <button onclick="deleteInlineProject('${projectId}')" class="bg-red-600 text-white px-4 py-2 rounded text-sm hover:bg-red-700 transition-colors">ลบ</button>
+                            <button onclick="cancelInlineEdit('${projectId}')" class="bg-gray-500 text-white px-4 py-2 rounded text-sm hover:bg-gray-600 transition-colors">ยกเลิก</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Inline edit functions
+        function cancelInlineEdit(projectId) {
+            // Reload projects to restore original card
+            displayProjects(allProjects);
+        }
+
+        async function saveInlineEdit(projectId) {
+            const title = document.getElementById(`inline-title-${projectId}`).value.trim();
+            const description = document.getElementById(`inline-description-${projectId}`).value.trim();
+            const category = document.getElementById(`inline-category-${projectId}`).value;
+            const order = parseInt(document.getElementById(`inline-order-${projectId}`).value) || 999;
+            const link = document.getElementById(`inline-link-${projectId}`).value.trim();
+            const facebookPost = document.getElementById(`inline-facebook-${projectId}`).value.trim();
+
+            // Collect images
+            const images = {};
+            for (let i = 1; i <= 5; i++) {
+                const imageUrl = document.getElementById(`inline-image${i}-${projectId}`).value.trim();
+                images[`image${i}`] = imageUrl || '';
+            }
+
+            if (!title || !description || !category) {
+                showNotification('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อ รายละเอียด และเลือกหมวดหมู่โปรเจค', 'error');
+                return;
+            }
+
+            // Show loading state
+            const saveButton = document.querySelector(`button[onclick="saveInlineEdit('${projectId}')"]`);
+            const originalText = saveButton.textContent;
+            saveButton.textContent = 'กำลังบันทึก...';
+            saveButton.disabled = true;
+
+            try {
+                // Update project in Firestore
+                const projectData = {
+                    title: title,
+                    description: description,
+                    category: category,
+                    order: order,
+                    link: link || '',
+                    facebookPost: facebookPost || '',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    ...images
+                };
+
+                await db.collection('projects').doc(projectId).update(projectData);
+
+                // Update local data
+                const projectIndex = allProjects.findIndex(p => p.id === projectId);
+                if (projectIndex !== -1) {
+                    allProjects[projectIndex] = { ...allProjects[projectIndex], ...projectData };
+                }
+
+                // Re-display projects with updated data
+                displayProjects(allProjects);
+                
+                showNotification('บันทึกสำเร็จ!', 'ข้อมูลผลงานได้รับการอัปเดตแล้ว', 'success');
+            } catch (error) {
+                console.error('Error updating project: ', error);
+                showNotification('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: ' + error.message, 'error');
+                
+                // Reset button state on error
+                saveButton.textContent = originalText;
+                saveButton.disabled = false;
+            }
+        }
+
+        async function deleteInlineProject(projectId) {
+            const confirmDelete = confirm('คุณแน่ใจหรือไม่ที่จะลบผลงานนี้? การกระทำนี้ไม่สามารถย้อนกลับได้');
+            if (!confirmDelete) return;
+
+            // Show loading state
+            const deleteButton = document.querySelector(`button[onclick="deleteInlineProject('${projectId}')"]`);
+            const originalText = deleteButton.textContent;
+            deleteButton.textContent = 'กำลังลบ...';
+            deleteButton.disabled = true;
+
+            try {
+                await db.collection('projects').doc(projectId).delete();
+
+                // Remove from local data
+                allProjects = allProjects.filter(p => p.id !== projectId);
+
+                // Re-display projects
+                displayProjects(allProjects);
+                
+                showNotification('ลบผลงานสำเร็จ!', 'ผลงานได้ถูกลบออกจากระบบแล้ว', 'success');
+            } catch (error) {
+                console.error('Error deleting project: ', error);
+                showNotification('เกิดข้อผิดพลาด', 'ไม่สามารถลบผลงานได้: ' + error.message, 'error');
+                
+                // Reset button state on error
+                deleteButton.textContent = originalText;
+                deleteButton.disabled = false;
+            }
+        }
+
+        // Cancel Edit (legacy - keep for compatibility)
+        document.getElementById('cancelEdit').addEventListener('click', () => {
+            document.getElementById('editProjectForm').classList.add('hidden');
+            currentEditingProjectId = null;
+        });
+
+        // Update Project
+        document.getElementById('updateProject').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            if (!currentEditingProjectId) return;
+
+            const title = document.getElementById('editProjectTitle').value.trim();
+            const description = document.getElementById('editProjectDescription').value.trim();
+            const category = document.getElementById('editProjectCategory').value;
+            const order = parseInt(document.getElementById('editProjectOrder').value) || 999;
+            const link = document.getElementById('editProjectLink').value.trim();
+            const facebookPost = document.getElementById('editFacebookPost').value.trim();
+
+            // Collect images
+            const images = {};
+            for (let i = 1; i <= 5; i++) {
+                const imageUrl = document.getElementById(`editProjectImage${i}`).value.trim();
+                images[`image${i}`] = imageUrl || '';
+            }
+
+            if (!title || !description || !category) {
+                showNotification('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อ รายละเอียด และเลือกหมวดหมู่โปรเจค', 'error');
+                return;
+            }
+
+            // Show loading state
+            const updateButton = document.getElementById('updateProject');
+            const originalText = updateButton.textContent;
+            updateButton.textContent = 'กำลังอัปเดต...';
+            updateButton.disabled = true;
+
+            try {
+                // Update project in Firestore
+                const projectData = {
+                    title: title,
+                    description: description,
+                    category: category,
+                    order: order,
+                    link: link || '',
+                    facebookPost: facebookPost || '',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    ...images
+                };
+
+                await db.collection('projects').doc(currentEditingProjectId).update(projectData);
+
+                console.log('Project updated with ID: ', currentEditingProjectId);
+
+                // Hide edit form
+                document.getElementById('editProjectForm').classList.add('hidden');
+                currentEditingProjectId = null;
+
+                // Reload projects
+                await loadProjects();
+                
+                alert('อัปเดตผลงานสำเร็จ!');
+            } catch (error) {
+                console.error('Error updating project: ', error);
+                showNotification('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: ' + error.message, 'error');
+            } finally {
+                // Reset button state
+                updateButton.textContent = originalText;
+                updateButton.disabled = false;
+            }
+        });
+
+        // Delete Project
+        document.getElementById('deleteProject').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            if (!currentEditingProjectId) return;
+
+            const confirmDelete = confirm('คุณแน่ใจหรือไม่ที่จะลบผลงานนี้? การกระทำนี้ไม่สามารถย้อนกลับได้');
+            if (!confirmDelete) return;
+
+            // Show loading state
+            const deleteButton = document.getElementById('deleteProject');
+            const originalText = deleteButton.textContent;
+            deleteButton.textContent = 'กำลังลบ...';
+            deleteButton.disabled = true;
+
+            try {
+                await db.collection('projects').doc(currentEditingProjectId).delete();
+
+                console.log('Project deleted with ID: ', currentEditingProjectId);
+
+                // Hide edit form
+                document.getElementById('editProjectForm').classList.add('hidden');
+                currentEditingProjectId = null;
+
+                // Reload projects
+                await loadProjects();
+                
+                alert('ลบผลงานสำเร็จ!');
+            } catch (error) {
+                console.error('Error deleting project: ', error);
+                showNotification('เกิดข้อผิดพลาด', 'ไม่สามารถลบผลงานได้: ' + error.message, 'error');
+            } finally {
+                // Reset button state
+                deleteButton.textContent = originalText;
+                deleteButton.disabled = false;
+            }
+        });
+
+        // Add Project
+        document.getElementById('addProject').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('projectTitle').value.trim();
+            const description = document.getElementById('projectDescription').value.trim();
+            const category = document.getElementById('projectCategory').value;
+            const order = parseInt(document.getElementById('projectOrder').value) || 999;
+            const link = document.getElementById('projectLink').value.trim();
+            const facebookPost = document.getElementById('facebookPost').value.trim();
+
+            // Collect images
+            const images = {};
+            for (let i = 1; i <= 5; i++) {
+                const imageUrl = document.getElementById(`projectImage${i}`).value.trim();
+                if (imageUrl) {
+                    images[`image${i}`] = imageUrl;
+                }
+            }
+
+            if (!title || !description || !category) {
+                showNotification('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อ รายละเอียด และเลือกหมวดหมู่โปรเจค', 'error');
+                return;
+            }
+
+            // Show loading state
+            const addButton = document.getElementById('addProject');
+            const originalText = addButton.textContent;
+            addButton.textContent = 'กำลังเพิ่ม...';
+            addButton.disabled = true;
+
+            try {
+                // Add project to Firestore
+                const projectData = {
+                    title: title,
+                    description: description,
+                    category: category,
+                    order: order,
+                    link: link || '',
+                    facebookPost: facebookPost || '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    ...images
+                };
+
+                const docRef = await db.collection('projects').add(projectData);
+
+                console.log('Project added with ID: ', docRef.id);
+
+                // Clear form
+                document.getElementById('projectTitle').value = '';
+                document.getElementById('projectDescription').value = '';
+                document.getElementById('projectCategory').value = '';
+                document.getElementById('projectOrder').value = '';
+                document.getElementById('projectLink').value = '';
+                document.getElementById('facebookPost').value = '';
+                
+                // Clear image inputs
+                for (let i = 1; i <= 5; i++) {
+                    document.getElementById(`projectImage${i}`).value = '';
+                }
+
+                // Reload projects
+                await loadProjects();
+                
+                showNotification('เพิ่มผลงานสำเร็จ!', 'ผลงานใหม่ได้ถูกเพิ่มเข้าสู่ระบบแล้ว', 'success');
+            } catch (error) {
+                console.error('Error adding project: ', error);
+                showNotification('เกิดข้อผิดพลาด', 'ไม่สามารถเพิ่มผลงานได้: ' + error.message, 'error');
+            } finally {
+                // Reset button state
+                addButton.textContent = originalText;
+                addButton.disabled = false;
+            }
+        });
+
+        // Load Profile Data
+        async function loadProfileData() {
+            try {
+                const doc = await db.collection('profile').doc('main').get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('heroName').textContent = data.name || 'สวัสดี ฉันคือ เจตต์นิภัทธ์ เบ็ญจมิตรกุล';
+                    document.getElementById('heroDescription').textContent = data.title || 'นักเรียนในโครงการห้องเรียนพิเศษวิทยาศาสตร์ วิจัย และเทคโนโลยี';
+                    document.getElementById('aboutText').textContent = data.about || 'สวัสดีครับ ผมชื่อ นายเจตต์นิภัทธ์ เบ็ญจมิตรกุล เป็นนักเรียนในโครงการห้องเรียนพิเศษวิทยาศาสตร์ วิจัย และเทคโนโลยี ผมมีความสนใจในด้านเทคโนโลยี การเขียนโปรแกรม และการพัฒนาโปรเจกต์ต่างๆ ที่สร้างสรรค์และมีประโยชน์';
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // Global projects array
+        let allProjects = [];
+
+        // Load Projects
+        async function loadProjects() {
+            try {
+                const snapshot = await db.collection('projects').get();
+                allProjects = [];
+
+                snapshot.forEach(doc => {
+                    allProjects.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+
+                // Sort by order first, then by creation date
+                allProjects.sort((a, b) => {
+                    if (a.order !== b.order) {
+                        return (a.order || 999) - (b.order || 999);
+                    }
+                    // If orders are the same, sort by creation date (newest first)
+                    return (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0);
+                });
+
+                displayProjects(allProjects);
+                console.log(`Loaded ${snapshot.size} projects`);
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                const projectsGrid = document.getElementById('projectsGrid');
+                projectsGrid.innerHTML = '<div class="col-span-full text-center text-red-500 py-8">เกิดข้อผิดพลาดในการโหลดผลงาน</div>';
+            }
+        }
+
+        // Display Projects with Animation
+        function displayProjects(projects, animate = false) {
+            const projectsGrid = document.getElementById('projectsGrid');
+            
+            if (animate) {
+                // Fade out existing cards
+                const existingCards = projectsGrid.querySelectorAll('.project-card');
+                existingCards.forEach(card => {
+                    card.classList.add('fade-out');
+                });
+                
+                // Wait for fade out animation, then update content
+                setTimeout(() => {
+                    updateProjectsContent(projects, projectsGrid);
+                }, 250);
+            } else {
+                updateProjectsContent(projects, projectsGrid);
+            }
+        }
+
+        function updateProjectsContent(projects, projectsGrid) {
+            projectsGrid.innerHTML = '';
+
+            if (projects.length === 0) {
+                const emptyMessage = document.createElement('div');
+                emptyMessage.className = 'col-span-full text-center text-gray-500 py-8 project-card fade-in';
+                emptyMessage.textContent = 'ยังไม่มีผลงานในหมวดหมู่นี้';
+                projectsGrid.appendChild(emptyMessage);
+                return;
+            }
+
+            projects.forEach((project, index) => {
+                const projectCard = createProjectCard(project, project.id);
+                projectCard.classList.add('project-card');
+                
+                // Add staggered animation delay
+                setTimeout(() => {
+                    projectCard.classList.add('fade-in');
+                    projectsGrid.appendChild(projectCard);
+                }, index * 100);
+            });
+        }
+
+        // Filter Projects with Animation
+        function filterProjects(category) {
+            if (category === 'all') {
+                displayProjects(allProjects, true);
+            } else {
+                const filtered = allProjects.filter(project => project.category === category);
+                displayProjects(filtered, true);
+            }
+        }
+
+        // Function to convert Google Drive link to direct image URL
+        function convertGoogleDriveUrl(url) {
+            if (!url) return '';
+            
+            // Check if it's a Google Drive link
+            if (url.includes('drive.google.com')) {
+                // Extract file ID from various Google Drive URL formats
+                let fileId = '';
+                
+                if (url.includes('/file/d/')) {
+                    // Format: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
+                    fileId = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+                } else if (url.includes('id=')) {
+                    // Format: https://drive.google.com/open?id=FILE_ID
+                    fileId = url.match(/id=([a-zA-Z0-9_-]+)/)?.[1];
+                } else if (url.includes('/d/')) {
+                    // Alternative format
+                    fileId = url.match(/\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+                }
+                
+                if (fileId) {
+                    // Try multiple Google Drive direct link formats
+                    // This format works better for images
+                    return `https://lh3.googleusercontent.com/d/${fileId}`;
+                }
+            }
+            
+            // Return original URL if not Google Drive or already converted
+            return url;
+        }
+
+        // Fallback function for Google Drive images
+        function handleImageError(img, originalUrl) {
+            if (originalUrl && originalUrl.includes('drive.google.com')) {
+                // Extract file ID and try alternative formats
+                let fileId = '';
+                if (originalUrl.includes('/file/d/')) {
+                    fileId = originalUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/)?.[1];
+                } else if (originalUrl.includes('id=')) {
+                    fileId = originalUrl.match(/id=([a-zA-Z0-9_-]+)/)?.[1];
+                }
+                
+                if (fileId) {
+                    // Try alternative Google Drive formats
+                    const alternatives = [
+                        `https://drive.google.com/uc?export=view&id=${fileId}`,
+                        `https://drive.google.com/uc?id=${fileId}`,
+                        `https://docs.google.com/uc?export=view&id=${fileId}`
+                    ];
+                    
+                    // Try each alternative
+                    let currentIndex = img.dataset.attemptIndex ? parseInt(img.dataset.attemptIndex) : 0;
+                    if (currentIndex < alternatives.length) {
+                        img.dataset.attemptIndex = (currentIndex + 1).toString();
+                        img.src = alternatives[currentIndex];
+                        return;
+                    }
+                }
+            }
+            
+            // If all attempts fail, hide the image and show placeholder
+            img.style.display = 'none';
+            if (img.parentElement) {
+                img.parentElement.innerHTML = '🖼️';
+            }
+        }
+
+        // Create Project Card
+        function createProjectCard(project, id) {
+            const card = document.createElement('div');
+            card.className = 'bg-white bg-opacity-80 backdrop-blur-md rounded-2xl p-6 hover:transform hover:scale-105 transition-all duration-300 shadow-lg border border-blue-100 cursor-pointer';
+            
+            // Get first available image and convert Google Drive URL
+            let displayImage = '';
+            for (let i = 1; i <= 5; i++) {
+                if (project[`image${i}`] && project[`image${i}`].trim()) {
+                    displayImage = convertGoogleDriveUrl(project[`image${i}`]);
+                    break;
+                }
+            }
+            
+            card.innerHTML = `
+                <div class="relative">
+                    <div class="aspect-[4/3] bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg mb-4 flex items-center justify-center text-4xl text-white">
+                        ${displayImage ? `<img src="${displayImage}" alt="${project.title}" class="w-full h-full object-cover rounded-lg" data-original-url="${project.image1 || ''}" onerror="handleImageError(this, this.dataset.originalUrl)">` : '🖼️'}
+                    </div>
+                    ${isAdminLoggedIn ? `<button class="edit-project-btn absolute top-2 right-2 bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-full text-sm transition-colors" data-project-id="${id}" onclick="event.stopPropagation(); editProject('${id}')">✏️</button>` : ''}
+                </div>
+                <h4 class="text-xl font-bold mb-2 text-gray-800">${project.title}</h4>
+                <p class="text-gray-600 mb-4 line-clamp-3">${project.description}</p>
+                <div class="text-blue-600 font-semibold text-sm">คลิกเพื่อดูรายละเอียด →</div>
+            `;
+            
+            // Add click event to show modal
+            card.addEventListener('click', () => {
+                showProjectDetail(project);
+            });
+            
+            return card;
+        }
+
+        // Load Admin Data
+        function loadAdminData() {
+            console.log('Admin logged in successfully');
+        }
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Category Filter Event Listeners
+        document.getElementById('filterAll').addEventListener('click', () => {
+            setActiveFilter('filterAll');
+            filterProjects('all');
+        });
+
+        document.getElementById('filterProject').addEventListener('click', () => {
+            setActiveFilter('filterProject');
+            filterProjects('project');
+        });
+
+        document.getElementById('filterLearning').addEventListener('click', () => {
+            setActiveFilter('filterLearning');
+            filterProjects('learning');
+        });
+
+        document.getElementById('filterLeadership').addEventListener('click', () => {
+            setActiveFilter('filterLeadership');
+            filterProjects('leadership');
+        });
+
+        document.getElementById('filterPresentation').addEventListener('click', () => {
+            setActiveFilter('filterPresentation');
+            filterProjects('presentation');
+        });
+
+        // Set Active Filter
+        function setActiveFilter(activeId) {
+            document.querySelectorAll('.category-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(activeId).classList.add('active');
+        }
+
+        // Initialize
+        checkSessionValidity(); // Check session on page load
+        loadProfileData();
+        loadProjects();
+
+        // Auth State Observer
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log('Admin logged in:', user.email);
+            } else {
+                console.log('Admin logged out');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'988f0ae6810eee29',t:'MTc1OTUyMTgwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
