@@ -431,19 +431,20 @@
         }
 
         body {
-            background:
-                linear-gradient(180deg, rgba(239, 246, 255, 0.92) 0%, rgba(255, 255, 255, 0.98) 42%, rgba(248, 250, 252, 1) 100%),
-                linear-gradient(90deg, rgba(37, 99, 235, 0.08) 1px, transparent 1px),
-                linear-gradient(0deg, rgba(14, 165, 233, 0.06) 1px, transparent 1px);
-            background-size: auto, 72px 72px, 72px 72px;
+            background-color: #f8fafc;
+            background-image: 
+                linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+            background-size: 32px 32px;
             color: var(--ink);
         }
 
         .site-nav {
-            background: rgba(13, 10, 30, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
+            background: rgba(30, 58, 138, 0.35); /* Liquid glass blue tint */
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Glossy glass border */
+            box-shadow: 0 20px 40px rgba(30, 58, 138, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3), inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
             border-radius: 9999px;
             position: fixed;
             top: 16px;
@@ -465,7 +466,7 @@
             padding: 0 14px;
             font-size: 14px;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.95); /* High-contrast text on glass */
             transition: all 0.2s ease;
             white-space: nowrap;
         }
@@ -789,7 +790,7 @@
         }
 
         .section-band {
-            background: rgba(239, 246, 255, 0.82);
+            background: rgba(239, 246, 255, 0.25); /* Tinted transparent to let grid show through */
             border-top: 1px solid #dbeafe;
             border-bottom: 1px solid #dbeafe;
         }
@@ -934,31 +935,19 @@
         .education-section {
             position: relative;
             overflow: hidden;
-            background:
-                radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.22), transparent 34%),
-                radial-gradient(circle at 85% 5%, rgba(37, 99, 235, 0.28), transparent 32%),
-                linear-gradient(135deg, #020617, var(--blue-950) 52%, #0f172a);
-            color: #fff;
-        }
-
-        .education-section .section-heading h3 {
-            color: #fff;
-        }
-
-        .education-section .section-heading p {
-            color: #dbeafe;
+            background: #ffffff;
+            color: var(--ink);
         }
 
         .education-card {
-            color: #e0f2fe;
-            background: rgba(15, 23, 42, 0.72) !important;
-            border: 1px solid rgba(147, 197, 253, 0.28) !important;
-            box-shadow: 0 22px 60px rgba(2, 6, 23, 0.34) !important;
-            backdrop-filter: blur(16px);
+            color: var(--ink);
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06) !important;
         }
 
         .education-card h4 {
-            color: #fff;
+            color: var(--ink);
         }
 
         .education-year-pill,
@@ -966,9 +955,9 @@
             display: inline-flex;
             align-items: center;
             border-radius: 999px;
-            border: 1px solid rgba(147, 197, 253, 0.34);
-            background: rgba(37, 99, 235, 0.16);
-            color: #dbeafe;
+            border: 1px solid #bfdbfe;
+            background: #eff6ff;
+            color: var(--blue-700);
             font-size: 13px;
             font-weight: 800;
             padding: 8px 12px;
@@ -1092,7 +1081,7 @@
         }
 
         .instagram-link {
-            background: linear-gradient(135deg, #0f172a, #1d4ed8, #0891b2);
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
         }
 
         .site-footer {
@@ -1270,6 +1259,51 @@
             }
         }
 
+        @media (max-width: 640px) {
+            .site-nav {
+                padding: 8px 16px !important;
+                border-radius: 24px !important;
+                top: 8px !important;
+                width: calc(100% - 16px) !important;
+            }
+            .site-nav > div {
+                flex-direction: column !important;
+                gap: 6px !important;
+            }
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                overflow-x: auto;
+                flex-wrap: nowrap !important;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .nav-links::-webkit-scrollbar {
+                display: none;
+            }
+            .nav-links a {
+                display: inline-flex !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-tile {
+                min-height: 96px !important;
+                padding: 8px !important;
+                font-size: 11px !important;
+                gap: 6px !important;
+            }
+            .logo-tile img {
+                max-height: 44px !important;
+            }
+            .hero-title {
+                font-size: 32px !important;
+            }
+            .section-heading h3 {
+                font-size: 28px !important;
+            }
+        }
+
         /* Subtle glow hover effect for skill capsules */
         .skill-capsule-glow {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1287,15 +1321,15 @@
     <nav class="site-nav">
         <div class="flex justify-between items-center gap-4 w-full">
             <a href="#" class="flex items-center gap-2.5 shrink-0" aria-label="Jetniphat Portfolio">
-                <span class="text-white font-bold text-lg tracking-wider font-mono">Jetniphat's Portfolio</span>
+                <span class="text-white font-bold text-base sm:text-lg tracking-wider font-mono"><span class="inline sm:hidden">JN</span><span class="hidden sm:inline">Jetniphat's</span> Portfolio</span>
             </a>
             <div class="nav-links flex items-center gap-1.5 sm:gap-2">
                 <a href="#" class="hidden md:inline-flex">แนะนำตัว</a>
                 <a href="#about" class="hidden sm:inline-flex">เกี่ยวกับ</a>
-                <a href="#education" class="hidden sm:inline-flex">การศึกษา</a>
+                <a href="#education" class="hidden sm:inline-flex">ประวัติการศึกษา</a>
                 <a href="#projects" class="border border-blue-500/30 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20 hover:text-white px-3.5 py-1.5 rounded-full text-sm font-semibold transition-all">ผลงาน</a>
                 <a href="#contact">ติดต่อ</a>
-                <button id="adminBtn" class="nav-admin-btn">จัดการ</button>
+                <button id="adminBtn" class="nav-admin-btn">J</button>
             </div>
         </div>
     </nav>
@@ -1304,11 +1338,11 @@
     <section class="hero-section pt-28 sm:pt-32 pb-14 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto hero-shell fade-in">
             <div class="hero-copy">
-                <div class="hero-kicker">แฟ้มสสะผลงานในรูปแบบออนไลน์</div>
+                <div class="hero-kicker">แฟ้มสะผลงานในรูปแบบออนไลน์</div>
                 <h2 id="heroName" class="hero-title">
                     เจตต์นิภัทธ์<br>เบ็ญจมิตรกุล
                 </h2>
-                <p id="heroDescription" class="hero-description">เว็บไซต์นี้เป็นการรวบรวมผลงาน ในการเข้าศึกษาต่อระดับอุดมศึกษาของผมครับ แนะนำให้เข้าใช้งานผ่านแท็บเล็ตหรือคอมพิวเตอร์นะครับ</p>
+                <p id="heroDescription" class="hero-description">เว็บไซต์นี้เป็นการรวบรวมผลงาน ในการเข้าศึกษาต่อระดับอุดมศึกษา<br>ของผมครับ แนะนำให้เข้าใช้งานผ่านแท็บเล็ตหรือคอมพิวเตอร์นะครับ :)</p>
                 <div class="hero-actions">
                     <a href="#projects" class="primary-action">ดูแฟ้มสะสมผลงาน</a>
                     <a href="#education" class="secondary-action">ประวัติการศึกษา</a>
@@ -1332,8 +1366,8 @@
             <div class="hero-visual">
                 <div class="credential-card featured-photo-card">
                     <div class="credential-topline">
-                        <span>รูปแนะนำตัว</span>
-                        <span>2026</span>
+                        <span>Jetniphat Benchamitkun</span>
+                        <span>เจตต์นิภัทธ์ เบ็ญจมิตรกุล</span>
                     </div>
                     <div id="featuredPhotoFrame" class="featured-photo-frame">
                         <img id="featuredIntroImage" alt="รูปแนะนำตัวของเจตต์นิภัทธ์" data-original-url="" onerror="handleFeaturedImageError(this)">
@@ -1386,9 +1420,7 @@
     <section id="about" class="section-block section-band px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="section-heading">
-                <span>เกี่ยวกับผม</span>
                 <h3>เกี่ยวกับผม</h3>
-                <p>เป้าหมาย ความสนใจ และทักษะที่ใช้พัฒนาโครงงานด้านวิศวกรรมและเทคโนโลยี</p>
             </div>
             <div class="about-grid">
                 <div class="profile-panel">
@@ -1402,7 +1434,7 @@
                 </div>
                 <div class="values-panel">
                     <div class="quote-mark">“</div>
-                    <p class="quote-text">ทุกความพยายาม อาจไม่ได้นำมาซึ่งความสำเร็จ แต่ทุก ๆ ความสำเร็จ ล้วนเกิดจากความพยายาม</p>
+                    <p class="quote-text">ทุกความพยายาม อาจไม่ได้นำมาซึ่งความสำเร็จ <br> แต่ทุก ๆ ความสำเร็จ ล้วนเกิดจากความพยายาม</p>
                 </div>
             </div>
 
@@ -1434,9 +1466,8 @@
     <section id="education" class="section-block education-section px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
             <div class="section-heading">
-                <span>ประวัติการศึกษา</span>
                 <h3>ประวัติการศึกษา</h3>
-                <p>เส้นทางการเรียนและหลักสูตรที่เกี่ยวข้องกับความสนใจด้านวิทยาศาสตร์ วิศวกรรม และเทคโนโลยี</p>
+                <p>เส้นทางการเรียนและหลักสูตรที่เกี่ยวข้องกับความสนใจด้านวิทยาศาสตร์และเทคโนโลยี</p>
             </div>
             
             <div id="educationTimeline" class="relative timeline-shell">
@@ -1579,7 +1610,7 @@
     </div>
 
     <!-- Side Edit Panel -->
-    <div id="sideEditPanel" class="fixed top-0 right-0 h-full w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
+    <div id="sideEditPanel" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 overflow-y-auto">
         <div class="p-6">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-xl font-bold text-gray-800">แก้ไขผลงาน</h3>
@@ -1597,7 +1628,7 @@
 
     <!-- Admin Panel Modal -->
     <div id="adminModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-        <div class="admin-panel rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto text-gray-800">
+        <div class="admin-panel rounded-2xl p-5 sm:p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto text-gray-800">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold">ยืนยันว่าคุณเป็นซัคเซส ตัวจริงเสียงจริง</h3>
                 <button id="closeAdmin" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
@@ -2263,15 +2294,19 @@
         function showSidePanel() {
             sideEditOverlay.classList.remove('hidden');
             sideEditPanel.classList.remove('translate-x-full');
-            document.body.style.paddingRight = '384px'; // 96 * 4 = 384px (w-96)
-            document.body.style.transition = 'padding-right 0.3s ease';
+            if (window.innerWidth > 768) {
+                document.body.style.paddingRight = '384px'; // 96 * 4 = 384px (w-96)
+                document.body.style.transition = 'padding-right 0.3s ease';
+            }
         }
 
         // Hide side panel
         function hideSidePanel() {
             sideEditOverlay.classList.add('hidden');
             sideEditPanel.classList.add('translate-x-full');
-            document.body.style.paddingRight = '0';
+            if (window.innerWidth > 768) {
+                document.body.style.paddingRight = '0';
+            }
         }
 
         // Close side panel events
@@ -2855,7 +2890,7 @@
                         ${logoUrl ? `<img src="${logoUrl}" alt="${education.school}" class="school-logo mr-4" data-original-url="${education.logo || ''}" onerror="handleImageError(this, this.dataset.originalUrl)">` : '<div class="school-logo mr-4 bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xl font-bold">โรงเรียน</div>'}
                         <div>
                             <h4 class="text-xl font-bold">${education.school}</h4>
-                            <p class="text-blue-200 font-semibold">${education.level}</p>
+                            <p class="text-blue-700 font-semibold">${education.level}</p>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -2863,7 +2898,7 @@
                     </div>
                     ${education.programs && education.programs.length > 0 ? `
                         <div class="mb-3">
-                            <span class="font-semibold text-blue-100">${(() => {
+                            <span class="font-semibold text-slate-800">${(() => {
                                 // Determine the type based on programs
                                 const regularPrograms = ['วิทยาศาสตร์-คณิตศาสตร์', 'ภาษา-สังคม', 'ศิลป์-ภาษา', 'ศิลป์-คำนวณ'];
                                 const specialPrograms = ['วิทยาศาสตร์ วิจัย และเทคโนโลยี', 'Mini English Program (MEP)', 'ภาษาจีน', 'ภาษาญี่ปุ่น', 'ศิลป์', 'กีฬา', 'ห้องเรียนพิเศษเด็กเก่ง'];
@@ -2899,7 +2934,7 @@
                             </div>
                         </div>
                     ` : ''}
-                    ${education.description ? `<p class="text-blue-100 leading-relaxed">${education.description}</p>` : ''}
+                    ${education.description ? `<p class="text-slate-600 leading-relaxed">${education.description}</p>` : ''}
                     
                     <!-- Timeline connector -->
                     <div class="absolute top-1/2 ${isLeft ? '-right-4' : '-left-4'} transform -translate-y-1/2">
@@ -3659,7 +3694,7 @@
         // Create Project Card
         function createProjectCard(project, id) {
             const card = document.createElement('div');
-            card.className = 'bg-white rounded-md overflow-hidden border border-blue-100 shadow-[0_18px_45px_rgba(15,23,42,0.08)] hover:shadow-[0_24px_60px_rgba(37,99,235,0.16)] hover:-translate-y-1 transition-all duration-300 cursor-pointer project-card group';
+            card.className = 'bg-white rounded-md overflow-hidden border border-blue-100 shadow-[0_18px_45px_rgba(15,23,42,0.08)] hover:shadow-[0_24px_60px_rgba(37,99,235,0.16)] hover:-translate-y-1 transition-all duration-300 cursor-pointer project-card group flex flex-col';
             
             // Get first available image and convert Google Drive URL
             let displayImage = '';
@@ -3686,7 +3721,7 @@
                     </div>
                     ${isAdminLoggedIn && !isSortMode ? `<button class="edit-project-btn absolute top-3 right-3 bg-white text-blue-900 border border-blue-100 px-3.5 py-1.5 rounded-full text-xs font-bold transition-colors z-10 shadow-md hover:bg-slate-50" data-project-id="${id}">แก้ไข</button>` : ''}
                 </div>
-                <div class="p-6 flex flex-col justify-between" style="min-height: 290px;">
+                <div class="p-6 flex flex-col justify-between flex-grow">
                     <div class="space-y-3">
                         <div class="inline-flex rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-800">${getCategoryLabel(project.category)}</div>
                         <h4 class="text-xl font-bold text-slate-950 leading-snug line-clamp-2" style="min-height: 56px;">${project.title}</h4>
@@ -3701,16 +3736,7 @@
                         <p class="text-slate-600 line-clamp-3 leading-relaxed text-sm">${project.description}</p>
                     </div>
                     
-                    <div class="mt-4 pt-4 border-t border-slate-100 space-y-3.5">
-                        ${project.organizer ? `
-                        <div class="flex items-center gap-2 text-slate-500">
-                            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            <span class="truncate text-xs font-semibold text-slate-500">${project.organizer}</span>
-                        </div>
-                        ` : ''}
-                        
+                    <div class="mt-4 pt-4 border-t border-slate-100">
                         <div class="flex items-center justify-between">
                             <span class="text-[#e11d48] font-bold text-sm">ดูรายละเอียด</span>
                             <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-[#e11d48] group-hover:bg-[#e11d48] group-hover:text-white transition-colors duration-200">
